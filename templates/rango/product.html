@@ -1,0 +1,186 @@
+ {% extends 'rango/base.html' %}
+ {% load static %}
+
+ {% block title_block %}
+ {% if product %}
+ {{ computer.product }}
+ {% else %}
+ Unknown Product
+ {% endif %}
+ {% endblock %}
+
+ {% block body_block %}
+ <div>
+    {% include 'rango/messages.html' %}
+            <center><h2>{{ product.name }}</h2></center>
+                <br><br><br>
+        {% if product %}
+            <div class="row">
+      <div class="col-6">
+        {% if product.picture %}
+          
+                <center><img src="{{ MEDIA_URL }}{{ product.picture }}"
+                     width="500"
+                     height="500"
+                     margin="100"
+                     alt="{{ product.name }} picture"
+                /></center>
+                <br />
+                {% else %}
+                <center><img src="{% static pathimg %}"
+                     width="500"
+                     height="500"
+                     margin="100"
+                     alt="Picture of Computer" /></center>
+                {% endif %}
+      </div>
+      <div class="col-6">
+       <ul>
+           <center>
+            <strong>Product Name: </strong> {{ product.name }}
+                
+                <br/>
+             Description: <br/>
+                {{ product.description }}
+                <br/>
+             Price:  £ {{ product.price |floatformat:2 }}
+                <br/>
+
+           <br>
+ 
+            <a class="btn btn-primary" id="add-to-wishlist" href="{% url 'rango:add_wishlist_view' product.id %}" >
+                Add To Wishlist <i class="far fa-heart"></i></a>
+            <br>
+        
+           <br/>
+
+           {% if user.is_authenticated %}
+           <script>
+            function token(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = token('csrftoken');
+            </script>
+
+
+
+<div id="paypal-button-container"></div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=ASccTIRrZCBVwlJLAtEGowdr4H7kgIvqI_7hFKJFN9HGtpIIUwApKR5oygkoy5ivdFM-WUfsKTLGq4ne"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+</script>
+
+<script>
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        // This function sets up the details of the transaction, including the amount and line item details.
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '100.00'
+            }
+          }]
+        });
+      },
+      onApprove: function(data) {
+        return fetch('/pago/', {
+            method: 'POST',
+            headers: {
+            'content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+            orderID: data.orderID
+            })
+        }).then(function(res) {
+            return res.json();
+        }).then(function(details) {
+            alert(details.mensaje);
+        })
+      }
+    }).render('#paypal-button-container');
+    //This function displays Smart Payment Buttons on your web page.
+  </script>
+{% else %}
+
+
+
+
+
+           <a class="btn btn-primary btn-xl" href="{% url 'rango:register' %}">Inicie sesion Primero</a>
+           {% endif %}
+           </center>
+                
+            </ul>
+      </div>
+    </div>
+        {% else %}
+            <strong>There is no product under this name.</strong>
+        {% endif %}
+        </div>
+ 
+ 
+ <br>
+<hr>
+ 
+  <div>
+     <h2> Reviews </h2>
+      <a class="btn btn-primary" href="{% url 'rango:review' product.slug %}" style="float:right;">Leave a review!</a>
+      <br>
+     {% if product.reviews.all%}
+     {% for review in product.reviews.all %}
+     Review by: {{ review.user }}
+     <br>
+     Review on: {{ review.date }}
+     <br>
+     Rating: {{ review.rating }} / 10
+     <br>
+     {{ review.content }}
+     <br>
+     <hr>
+     {% endfor %}
+     
+     {% endif %}
+      {% if product.dummy_reviews.all%}
+     {% for review in product.dummy_reviews.all %}
+     Review by: {{ review.dummy_user }}
+     <br>
+     Review on: {{ review.dummy_date }}
+     <br>
+     Rating: {{ review.dummy_rating }} / 10
+     <br>
+     {{ review.dummy_content }}
+     <br>
+     <hr>
+     {% endfor %}
+     
+     {% endif %}
+      {% if not product.dummy_reviews.all and not product.reviews.all%}
+      No reviews yet
+      {% endif %}
+ </div>
+ <script>
+    setTimeout(function(){
+      if ($('#msg').length > 0) {
+        $('#msg').remove();
+      }
+    }, 2000)
+  </script> 
+ {% endblock %}
+
+ {% block script_block%}
+<script>
+    document.body.querySelector('#mainNav').classList.add('navbar-shrink')
+</script>
+{% endblock %}

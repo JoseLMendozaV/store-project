@@ -1,0 +1,67 @@
+{% extends 'rango/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Article
+{% endblock %}
+
+{% block body_block%}
+
+
+
+<div class="row h-100 justify-content-center align-items-center">
+    {% include 'rango/messages.html' %}
+    <div class="col-md-8">
+        <h1>Articles Registered</h1>
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'rango:add_article' %}">Add a New Article</a>
+            <table class="table table-sm-5">
+                    <tr>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Date</th>
+                        <th>Author</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    {% for article in articles %}
+
+                        <tr>
+                            <td>{{ article.title }}</td>
+                            <td>{{ article.content }}</td>
+                            <td>{{ article.date }}</td>
+                            <td>{{ article.author }}</td>
+
+                            <td><a class="btn btn-sm btn-info" href="{% url 'rango:edit_article' article.id %}">Update</a></td>
+                            <td><a class="btn btn-sm btn-danger" href="{%  url 'rango:delete_article' article.id %}">Delete</a></td>
+                        </tr>
+
+                    {% endfor %}
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li>{% if message.tags %} {% endif %}{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+            </table>
+            <a class="btn btn-secondary" href="{% url 'rango:index' %}">Return to Home</a>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function(){
+      if ($('#msg').length > 0) {
+        $('#msg').remove();
+      }
+    }, 2000)
+  </script> 
+{% endblock %}
+
+{% block script_block%}
+<script>
+    document.body.querySelector('#mainNav').classList.add('navbar-shrink')
+</script>
+{% endblock %}

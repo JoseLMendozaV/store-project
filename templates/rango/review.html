@@ -1,0 +1,32 @@
+{% extends 'rango/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title_block %}
+Add a Review!
+{% endblock %}
+
+{% block body_block %}
+<h1>Add a Review</h1>
+<div>
+	<form id="review_form" method="post" action="{% url 'rango:review' product.slug %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		
+		
+		<div class="col-2">
+        {{ form.rating|as_crispy_field}}
+      </div>
+      <div class="col-8">
+        {{ form.content|as_crispy_field}}
+      </div>
+    
+		<input type="submit" name="submit" value="Add Review" />
+		<input type="submit" id="back-product-btn" value="Back" />
+	</form>
+</div>
+{% endblock %}
+
+{% block script_block%}
+<script>
+    document.body.querySelector('#mainNav').classList.add('navbar-shrink')
+</script>
+{% endblock %}

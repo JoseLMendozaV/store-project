@@ -1,0 +1,74 @@
+{% extends 'rango/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Homepage
+{% endblock %}
+
+{% block masthead_block%}
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container">
+        <div class="masthead-subheading">Welcome To ANYTHING!</div>
+        <div class="masthead-heading text-uppercase">Which laptop suits you best?</div>
+        <a class="btn btn-primary btn-xl text-uppercase" href="#check-item">FIND OUT</a>
+    </div>
+</header>
+{% endblock %}
+
+
+{% block body_block%}
+
+
+<h1><center>Check items on ANYTHING</center></h1>
+
+<div class="container" id="check-item">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-6">
+                <div class="card-body">
+                    <h2>Most Liked Categories</h2>
+                    <p class="card-text">
+                        {% if categories %}
+                        <ul class="list-group">
+                            {% for category in categories %}
+                            <li class="list-group-item">
+                                <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <strong>There are no categories present.</strong>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-6">
+                <div class="card-body">
+                    <h2>Hot Products!</h2>
+                    <p class="card-text">
+                        {% if products %}
+                        <ul class="list-group">
+                            {% for product in products %}
+                                <li class="list-group-item"><a href="{% url 'rango:show_computer' product.slug %}">{{ product.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <strong>There are no products present.</strong>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script_block%}
+<!-- Core theme JS-->
+<script src="{% static 'js/menu-scripts.js' %}"></script>
+{% endblock %}

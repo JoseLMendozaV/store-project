@@ -1,0 +1,130 @@
+{% extends 'rango/base.html' %}
+{% load static %}
+{% load socialaccount %}
+
+
+
+
+{% block title_block %}
+    Register
+{% endblock %}
+
+{% block body_block %}
+<link rel="stylesheet" href="{% static 'css/logregister.css' %}"/>
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+
+
+
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+                      <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                      <label for="reg-log"></label>
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3">Log In</h4>
+                                        <form action="{% url 'rango:login' %}" method="post" id="login_form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" name="username" class="form-style" placeholder="Username" id="logemail" autocomplete="off">
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>	
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="password" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                       <!-- <a href="#" class="btn mt-4">submit</a>-->
+                                        <input class="btn mt-4" type="submit" value="submit" />
+                                        </form>
+                                      <!--   <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>-->
+                                      </div>
+                                  </div>
+                              </div>
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3">Sign Up</h4>
+                                        
+                                        {% if registered %}
+                                        Rango says: <strong>thank you for registering!</strong>
+                                        <a href="{% url 'rango:index' %}">Return to the homepage.</a><br />
+                                    {% else %}
+
+                                    <form action="{% url 'rango:register' %}" id="user_form" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+
+                                        <!-- Campo para el username en user_form -->
+                                        <div class="form-group">
+                                            <input type="text" name="{{ user_form.username.name }}" class="form-style" placeholder="Username" id="{{ user_form.username.id_for_label }}" autocomplete="off" value="{{ user_form.username.value|default_if_none:'' }}">
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <input type="text" name="{{ user_form.first_name.name }}" class="form-style" placeholder="First Name" id="{{ user_form.first_name.id_for_label }}" autocomplete="off" value="{{ user_form.first_name.value|default_if_none:'' }}">
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        
+                                        <!-- Campo para el apellido en user_form -->
+                                        <div class="form-group mt-2">
+                                            <input type="text" name="{{ user_form.last_name.name }}" class="form-style" placeholder="Last Name" id="{{ user_form.last_name.id_for_label }}" autocomplete="off" value="{{ user_form.last_name.value|default_if_none:'' }}">
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        
+                                        <!-- Campo para el email en user_form -->
+                                        <div class="form-group mt-2">
+                                            <input type="email" name="{{ user_form.email_address.name }}" class="form-style" placeholder="Email Address" id="{{ user_form.email_address.id_for_label }}" autocomplete="off" value="{{ user_form.email_address.value|default_if_none:'' }}">
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+                                        
+                                        <!-- Campo para la contraseña en user_form -->
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="{{ user_form.password.name }}" class="form-style" placeholder="Password" id="{{ user_form.password.id_for_label }}" autocomplete="off">
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        
+                                        <!-- Campo para la confirmación de contraseña en user_form -->
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="{{ user_form.password_confirmation.name }}" class="form-style" placeholder="Confirm Password" id="{{ user_form.password_confirmation.id_for_label }}" autocomplete="off">
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        
+                                        <!-- Campo para el sitio web en profile_form -->
+                                        <div class="form-group mt-2">
+                                            <input type="url" name="{{ profile_form.website.name }}" class="form-style" placeholder="Website" id="{{ profile_form.website.id_for_label }}" autocomplete="off" value="{{ profile_form.website.value|default_if_none:'' }}">
+                                            <i class="input-icon uil uil-globe"></i>
+                                        </div>
+                                        
+                                        <!-- Campo para la imagen en profile_form -->
+                                        <!-- Suponiendo que se trata de un archivo de imagen que se subirá -->
+                                        <div class="form-group mt-2">
+                                            <input type="file" name="{{ profile_form.picture.name }}" class="form-style-file" id="{{ profile_form.picture.id_for_label }}" autocomplete="off">
+                                            <i class="input-icon uil uil-image"></i>
+                                        </div>
+                                        <input class="btn mt-4" type="submit" name="submit" value="Register" />
+                                    </form>
+                                    {% endif %}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script_block%}
+<script>
+    document.body.querySelector('#mainNav').classList.add('navbar-shrink')
+</script>
+{% endblock %}

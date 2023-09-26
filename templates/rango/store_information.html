@@ -1,0 +1,63 @@
+{% extends 'rango/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Stores
+{% endblock %}
+
+{% block body_block%}
+
+
+<div class="container">
+
+    <br>
+    <div class="card">
+        <div class="card-body">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-md-8">
+                <h3 class="row h-100 justify-content-center align-items-center">
+                    {% csrf_token %}
+                    {{ store.name }}
+                </h3>
+                <br>
+                <h3 class="row h-100 justify-content-center align-items-center">E-mail: {{ store.email }}</h3>
+                <br>
+                <h5 class="row h-100 justify-content-center align-items-center">Rating: {{ store.ratings }}</h5>
+
+            </div>
+        </div>
+        <br>
+
+        <div class="row h-100 justify-content-center align-items-center">
+<br>
+<div class="col-md-6">
+   <div id="map"></div>
+   {{ map|safe }}
+</div>
+
+
+    
+
+
+
+
+
+
+    </div>
+
+
+
+    </div>
+    </div>
+    <br>
+    <a class="btn btn-danger" href="{% url 'rango:store_show' %}">Back</a>
+</div>
+
+
+{% endblock %}
+
+{% block script_block%}
+<script>
+    document.body.querySelector('#mainNav').classList.add('navbar-shrink')
+</script>
+{% endblock %}
