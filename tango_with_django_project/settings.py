@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-vw%wqp+4)a#fue$scxcjixv^b*dii3j@p@yrlt^6!n!$@mr#4!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','josemendoza.pythonanywhere.com']
 
 LOGIN_URL = 'rango:login'
 
