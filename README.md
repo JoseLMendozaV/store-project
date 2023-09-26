@@ -1,1 +1,1 @@
-# store-proyect
+# store-project
